@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Museo de Nuestra Historia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     PARTÍCULAS DE FONDO
+════════════════════════════════════════ -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- ════════════════════════════════════════
+     PANTALLA DE CARGA / INTRO
+════════════════════════════════════════ -->
+<div id="introScreen" class="intro-screen">
+  <div class="intro-particles"></div>
+  <div class="intro-content">
+    <div class="intro-line intro-bienvenida">Bienvenida</div>
+    <div class="intro-line intro-name" id="introName">Lucia</div>
+    <div class="intro-line intro-subtitle">Hoy quiero mostrarte algo especial.</div>
+    <button class="btn-enter" id="btnEnter">
+      <span class="btn-enter-text">Entrar al museo</span>
+      <span class="btn-enter-glow"></span>
+    </button>
+  </div>
+  <div class="intro-corner intro-corner--tl">✦</div>
+  <div class="intro-corner intro-corner--tr">✦</div>
+  <div class="intro-corner intro-corner--bl">✦</div>
+  <div class="intro-corner intro-corner--br">✦</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     NAVEGACIÓN
+════════════════════════════════════════ -->
+<nav id="mainNav" class="main-nav hidden">
+  <div class="nav-brand">❧</div>
+  <div class="nav-dots">
+    <button class="nav-dot active" data-section="0" title="Nuestro Inicio"></button>
+    <button class="nav-dot" data-section="1" title="Galería"></button>
+    <button class="nav-dot" data-section="2" title="Lo que admiro"></button>
+    <button class="nav-dot" data-section="3" title="Las estrellas"></button>
+    <button class="nav-dot" data-section="4" title="Nuestros sueños"></button>
+    <button class="nav-dot" data-section="5" title="Carta"></button>
+  </div>
+  <div class="nav-hint" id="navHint">I</div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     REPRODUCTOR DE MÚSICA
+════════════════════════════════════════ -->
+<div id="musicPlayer" class="music-player hidden">
+  <button id="musicToggle" class="music-toggle" title="Música">
+    <span class="music-icon">♪</span>
+    <span class="music-bars">
+      <span></span><span></span><span></span><span></span>
+    </span>
+  </button>
+  <div class="music-panel" id="musicPanel">
+    <div class="music-info">
+      <div id="musicTitle" class="music-title">Nuestra Canción</div>
+      <div id="musicArtist" class="music-artist">—</div>
+    </div>
+    <div class="music-controls">
+      <button class="mctrl" id="prevBtn" title="Anterior">⏮</button>
+      <button class="mctrl mctrl-play" id="playBtn" title="Reproducir">▶</button>
+      <button class="mctrl" id="nextBtn" title="Siguiente">⏭</button>
+    </div>
+    <div class="music-volume">
+      <span>🔊</span>
+      <input type="range" id="volSlider" min="0" max="1" step="0.05" value="0.6" />
+    </div>
+  </div>
+</div>
+<audio id="audioEl" preload="metadata"></audio>
+
+<!-- ════════════════════════════════════════
+     BOTÓN SECRETO
+════════════════════════════════════════ -->
+<div id="secretBtn" class="secret-btn" title="...">✦</div>
+
+<!-- ════════════════════════════════════════
+     MODAL SECRETO
+════════════════════════════════════════ -->
+<div id="secretModal" class="secret-modal hidden">
+  <div class="secret-content">
+    <button class="secret-close" id="secretClose">✕</button>
+    <div class="secret-stars-bg"></div>
+    <div class="secret-icon">💌</div>
+    <h2 class="secret-title">Encontraste el secreto</h2>
+    <p class="secret-text" id="secretText"><!-- Editable en script.js → CONFIG.secretMessage --></p>
+    <div class="secret-divider"></div>
+    <p class="secret-signature">Con todo mi amor ❤️</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     CONTENEDOR PRINCIPAL DE SALAS
+════════════════════════════════════════ -->
+<main id="mainContent" class="main-content hidden">
+
+  <!-- ──────────────────────────────────
+       SALA 1 · NUESTRO INICIO
+  ────────────────────────────────── -->
+  <section class="sala sala-1" id="sala0" data-label="Sala I">
+    <div class="sala-header">
+      <div class="sala-number">I</div>
+      <h2 class="sala-title">Nuestro Inicio</h2>
+      <p class="sala-subtitle">El momento en que todo comenzó</p>
+      <div class="sala-divider"></div>
+    </div>
+
+    <div class="timeline" id="timelineContainer">
+      <!-- Los eventos se generan desde script.js -->
+    </div>
+
+    <div class="sala-scroll-hint">↓</div>
+  </section>
+
+  <!-- ──────────────────────────────────
+       SALA 2 · GALERÍA DE RECUERDOS
+  ────────────────────────────────── -->
+  <section class="sala sala-2" id="sala1" data-label="Sala II">
+    <div class="sala-header">
+      <div class="sala-number">II</div>
+      <h2 class="sala-title">Galería de Recuerdos</h2>
+      <p class="sala-subtitle">Momentos que viven para siempre</p>
+      <div class="sala-divider"></div>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Las fotos se generan desde script.js -->
+    </div>
+
+    <!-- Modal galería -->
+    <div id="galleryModal" class="gallery-modal hidden">
+      <div class="gallery-modal-backdrop" id="galleryBackdrop"></div>
+      <div class="gallery-modal-inner">
+        <button class="gallery-close" id="galleryClose">✕</button>
+        <button class="gallery-nav gallery-nav-prev" id="galleryPrev">‹</button>
+        <button class="gallery-nav gallery-nav-next" id="galleryNext">›</button>
+        <div class="gallery-img-wrap">
+          <img id="galleryModalImg" src="" alt="" />
+        </div>
+        <div class="gallery-caption">
+          <div id="galleryCapTitle" class="gallery-cap-title"></div>
+          <div id="galleryCapDesc" class="gallery-cap-desc"></div>
+          <div class="gallery-counter">
+            <span id="galleryCurrent">1</span> / <span id="galleryTotal">1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────
+       SALA 3 · LO QUE ADMIRO DE TI
+  ────────────────────────────────── -->
+  <section class="sala sala-3" id="sala2" data-label="Sala III">
+    <div class="sala-header">
+      <div class="sala-number">III</div>
+      <h2 class="sala-title">Lo Que Admiro De Ti</h2>
+      <p class="sala-subtitle">Las mil razones por las que eres extraordinaria</p>
+      <div class="sala-divider"></div>
+    </div>
+    <div class="admiro-grid" id="admiroGrid">
+      <!-- Tarjetas desde script.js -->
+    </div>
+    <!-- Modal admiro -->
+    <div id="admiroModal" class="admiro-modal hidden">
+      <div class="admiro-modal-bg" id="admiroModalBg"></div>
+      <div class="admiro-modal-box">
+        <button class="admiro-close" id="admiroClose">✕</button>
+        <div class="admiro-modal-icon" id="admiroModalIcon"></div>
+        <h3 class="admiro-modal-title" id="admiroModalTitle"></h3>
+        <p class="admiro-modal-text" id="admiroModalText"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────
+       SALA 4 · LAS ESTRELLAS DE NUESTRA HISTORIA
+  ────────────────────────────────── -->
+  <section class="sala sala-4" id="sala3" data-label="Sala IV">
+    <canvas id="starCanvas" class="star-canvas"></canvas>
+    <div class="sala-header sala-header--light">
+      <div class="sala-number sala-number--light">IV</div>
+      <h2 class="sala-title sala-title--light">Las Estrellas De Nuestra Historia</h2>
+      <p class="sala-subtitle sala-subtitle--light">Cada estrella guarda un recuerdo</p>
+      <div class="sala-divider sala-divider--light"></div>
+    </div>
+    <div class="stars-hint">Toca las estrellas brillantes ✦</div>
+    <!-- Modal estrella -->
+    <div id="starModal" class="star-modal hidden">
+      <div class="star-modal-content">
+        <button class="star-close" id="starClose">✕</button>
+        <div class="star-modal-icon" id="starModalIcon">⭐</div>
+        <h3 class="star-modal-title" id="starModalTitle"></h3>
+        <div class="star-modal-img-wrap" id="starModalImgWrap"></div>
+        <p class="star-modal-text" id="starModalText"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────
+       SALA 5 · NUESTROS SUEÑOS
+  ────────────────────────────────── -->
+  <section class="sala sala-5" id="sala4" data-label="Sala V">
+    <div class="sala-header">
+      <div class="sala-number">V</div>
+      <h2 class="sala-title">Nuestros Sueños</h2>
+      <p class="sala-subtitle">Lo que nos espera juntos</p>
+      <div class="sala-divider"></div>
+    </div>
+    <div class="dreams-grid" id="dreamsGrid">
+      <!-- Sueños desde script.js -->
+    </div>
+  </section>
+
+  <!-- ──────────────────────────────────
+       SALA FINAL · CARTA DE CUMPLEAÑOS
+  ────────────────────────────────── -->
+  <section class="sala sala-final" id="sala5" data-label="Carta">
+    <div class="carta-wrap">
+      <div class="carta-paper">
+        <div class="carta-header-deco">✦ &nbsp; ✦ &nbsp; ✦</div>
+        <h2 class="carta-heading">Carta de Cumpleaños</h2>
+        <div class="carta-divider-gold"></div>
+        <div class="carta-body" id="cartaBody">
+          <!-- Texto typewriter desde JS -->
+        </div>
+        <div class="carta-firma hidden" id="cartaFirma">
+          <div class="firma-divider"></div>
+          <div class="firma-text" id="firmaText"></div>
+        </div>
+      </div>
+      <div class="feliz-cumple hidden" id="felizCumple">
+        <div class="cumple-text">Feliz Cumpleaños</div>
+        <div class="cumple-heart">❤️</div>
+        <div class="cumple-confetti" id="confettiContainer"></div>
+      </div>
+    </div>
+  </section>
+
+</main><!-- /main-content -->
+
+<script src="script.js"></script>
+</body>
+</html>
